@@ -61,6 +61,7 @@ CREATE TABLE "invoices" (
   "app_services_fee" INTEGER,
   "shipping_fee" INTEGER,
   "shipping_assurance_fee" INTEGER,
+  "insurance_id" INTEGER,
   "created_at" DATETIME,
   "updated_at" DATETIME,
   "deleted_at" DATETIME,
