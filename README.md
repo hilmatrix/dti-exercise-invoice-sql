@@ -1,0 +1,1 @@
+Sintaksnya pake SQLite
