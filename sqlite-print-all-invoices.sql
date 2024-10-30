@@ -16,12 +16,16 @@ SELECT
     invoices.shipping_fee,
     invoices.shipping_assurance_fee AS assurance_fee,
     
-    SUM(items.price * invoice_item.quantity) 
+    SUM(item_snapshots.price * invoice_item.quantity)*SUM(promos.cashback)/100 as cashback,
+    SUM(item_snapshots.price * invoice_item.quantity)*SUM(promos.discount)/100 as discount,
+    
+    SUM(item_snapshots.price * invoice_item.quantity) 
     + invoices.services_fee 
     + invoices.app_services_fee 
     + invoices.shipping_fee 
-    + invoices.shipping_assurance_fee AS total_bill,
-
+    + invoices.shipping_assurance_fee -
+    SUM(item_snapshots.price * invoice_item.quantity)*SUM(promos.discount)/100 AS total_bill,
+    
     GROUP_CONCAT(DISTINCT promos.name) AS promos,
     courier_types.name AS courier_type,
     GROUP_CONCAT(DISTINCT payment_types.name) AS payment_methods

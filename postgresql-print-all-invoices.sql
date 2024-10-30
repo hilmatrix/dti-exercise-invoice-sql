@@ -6,8 +6,8 @@ SELECT
     shipping_address_list.address AS shipping_address,
     
     STRING_AGG(DISTINCT items.name, ', ') AS item_names,
-    STRING_AGG(DISTINCT item_snapshots.price::TEXT, ', ') AS item_prices,
-    STRING_AGG(DISTINCT invoice_item.quantity::TEXT, ', ') AS item_quantities,
+    STRING_AGG(DISTINCT item_snapshots.price::text, ', ') AS item_prices,
+    STRING_AGG(DISTINCT invoice_item.quantity::text, ', ') AS item_quantities,
     
     SUM(item_snapshots.price * invoice_item.quantity) AS total_item_price,
         
@@ -16,12 +16,16 @@ SELECT
     invoices.shipping_fee,
     invoices.shipping_assurance_fee AS assurance_fee,
     
-    SUM(items.price * invoice_item.quantity) 
+    SUM(item_snapshots.price * invoice_item.quantity) * SUM(promos.cashback) / 100 AS cashback,
+    SUM(item_snapshots.price * invoice_item.quantity) * SUM(promos.discount) / 100 AS discount,
+    
+    SUM(item_snapshots.price * invoice_item.quantity) 
     + invoices.services_fee 
     + invoices.app_services_fee 
     + invoices.shipping_fee 
-    + invoices.shipping_assurance_fee AS total_bill,
-
+    + invoices.shipping_assurance_fee 
+    - SUM(item_snapshots.price * invoice_item.quantity) * SUM(promos.discount) / 100 AS total_bill,
+    
     STRING_AGG(DISTINCT promos.name, ', ') AS promos,
     courier_types.name AS courier_type,
     STRING_AGG(DISTINCT payment_types.name, ', ') AS payment_methods
