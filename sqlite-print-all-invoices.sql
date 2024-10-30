@@ -1,30 +1,30 @@
 SELECT 
-    sellers.name seller_name,
-    buyers.name buyer_name,
-    invoices.created_at purchase_date,
-    invoices.updated_at updated_at,
-    shipping_address_list.address shipping_address,
+    sellers.name AS seller_name,
+    buyers.name AS buyer_name,
+    invoices.created_at AS purchase_date,
+    invoices.updated_at AS updated_at,
+    shipping_address_list.address AS shipping_address,
     
-    GROUP_CONCAT(items.name) item_names,
-    GROUP_CONCAT(items.price) item_prices,
-    GROUP_CONCAT(invoice_item.quantity) item_quantities,
+    GROUP_CONCAT(DISTINCT items.name) AS item_names,
+    GROUP_CONCAT(DISTINCT item_snapshots.price) AS item_prices,
+    GROUP_CONCAT(DISTINCT invoice_item.quantity) AS item_quantities,
     
-    SUM(items.price * invoice_item.quantity) total_item_price,
+    SUM(item_snapshots.price * invoice_item.quantity) AS total_item_price,
         
     invoices.services_fee,
     invoices.app_services_fee,
     invoices.shipping_fee,
-    invoices.shipping_assurance_fee assurance_fee,
+    invoices.shipping_assurance_fee AS assurance_fee,
     
     SUM(items.price * invoice_item.quantity) 
     + invoices.services_fee 
     + invoices.app_services_fee 
     + invoices.shipping_fee 
-    + invoices.shipping_assurance_fee total_bill,
+    + invoices.shipping_assurance_fee AS total_bill,
 
-    GROUP_CONCAT(promos.name) promos,
-    courier_types.name courier_type,
-    GROUP_CONCAT(payment_types.name) payment_methods
+    GROUP_CONCAT(DISTINCT promos.name) AS promos,
+    courier_types.name AS courier_type,
+    GROUP_CONCAT(DISTINCT payment_types.name) AS payment_methods
 FROM 
     invoices
 JOIN 
@@ -37,15 +37,17 @@ JOIN
     invoice_item ON invoices.id = invoice_item.invoice_id
 JOIN 
     items ON invoice_item.items_id = items.id
-JOIN
+JOIN 
+    item_snapshots ON items.id = item_snapshots.item_id
+LEFT JOIN 
     promos ON invoices.id = promos.invoice_id
 JOIN 
     courier_types ON invoices.courier_type_id = courier_types.id
-JOIN 
-    payment_types ON invoices.id = payment_types.invoice_id
+LEFT JOIN 
+    payment_types ON payment_types.invoice_id = invoices.id
 GROUP BY 
     invoices.id, sellers.name, buyers.name, invoices.created_at, invoices.updated_at, 
     shipping_address_list.address, invoices.services_fee, invoices.app_services_fee, 
-    invoices.shipping_fee, invoices.shipping_assurance_fee, promos.name, courier_types.name
+    invoices.shipping_fee, invoices.shipping_assurance_fee, courier_types.name
 ORDER BY 
     invoices.id;

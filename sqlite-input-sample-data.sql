@@ -23,9 +23,14 @@ INSERT INTO "items" (
     "id", "seller_id", "name", "description", 
     "price", "weight", "created_at", "updated_at", "deleted_at"
 ) VALUES
-(1, 1, 'Sapphire NITRO+ Radeon RX 7900 XTX 24GB', 'AMD Graphic Card', 20500000, 5000, '2024-01-01 10:00:00', '2024-01-01 10:00:00', NULL),
+(1, 1, 'Sapphire NITRO+ Radeon RX 7900 XTX 24GB', 'AMD Graphic Card', 18000000, 5000, '2024-01-01 10:00:00', '2024-01-01 10:00:00', NULL),
 (2, 2, 'Omega Cat Food 1 Kg', 'Makanan Kucing', 30000, 1000, '2024-02-01 11:00:00', '2024-02-01 11:00:00', NULL),
 (3, 3, 'Wonder Woman Action Figure', 'Based On Marvel universe character', 400000, 500, '2024-03-01 12:00:00', '2024-03-01 12:00:00', NULL);
+
+INSERT INTO "item_snapshots" ("id", "item_id", "price", "created_at", "updated_at", "deleted_at") VALUES
+(1, 1, 20500000, '2024-01-15 10:00:00', '2024-01-15 10:00:00', NULL),
+(2, 2, 35000, '2024-02-20 12:00:00', '2024-02-20 12:00:00', NULL),
+(3, 3, 300000, '2024-02-25 15:00:00', '2024-02-25 15:00:00', NULL);
 
 -- Insert dummy data into courier_types
 INSERT INTO "courier_types" ("id", "name", "created_at", "updated_at", "deleted_at")
@@ -66,12 +71,12 @@ INSERT INTO "payment_types" (
 
 -- Insert dummy data into promos
 INSERT INTO "promos" (
-    "id", "invoice_id", "name", "discount", 
+    "id", "invoice_id", "name", "discount", "cashback",
     "created_at", "updated_at", "deleted_at"
 ) VALUES
-(1, 1, 'Promo Tokopedia', 10.0, '2024-01-10 10:00:00', '2024-01-10 10:00:00', NULL),
-(2, 2, 'Promo CIMB Niaga', 20.0, '2024-02-10 11:00:00', '2024-02-10 11:00:00', NULL),
-(3, 3, 'Promo Gojek', 30.0, '2024-03-10 12:00:00', '2024-03-10 12:00:00', NULL);
+(1, 1, 'Promo Tokopedia', 0, 5, '2024-01-10 10:00:00', '2024-01-10 10:00:00', NULL),
+(2, 2, 'Promo CIMB Niaga', 0, 1,'2024-02-10 11:00:00', '2024-02-10 11:00:00', NULL),
+(3, 3, 'Promo Gojek', 0, 1, '2024-03-10 12:00:00', '2024-03-10 12:00:00', NULL);
 
 -- Insert dummy data into insurance
 INSERT INTO "insurance" (

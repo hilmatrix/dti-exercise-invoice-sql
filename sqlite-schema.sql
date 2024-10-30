@@ -42,6 +42,16 @@ CREATE TABLE "items" (
   FOREIGN KEY ("seller_id") REFERENCES "sellers" ("id")
 );
 
+CREATE TABLE "item_snapshots" (
+  "id" INTEGER PRIMARY KEY,
+  "item_id" INTEGER,
+  "price" INTEGER,
+  "created_at" DATETIME,
+  "updated_at" DATETIME,
+  "deleted_at" DATETIME,
+  FOREIGN KEY ("item_id") REFERENCES "items" ("id")
+);
+
 CREATE TABLE "courier_types" (
   "id" INTEGER PRIMARY KEY,
   "name" TEXT,
@@ -99,6 +109,7 @@ CREATE TABLE "promos" (
   "invoice_id" INTEGER,
   "name" TEXT,
   "discount" REAL,
+  "cashback" REAL,
   "created_at" DATETIME,
   "updated_at" DATETIME,
   "deleted_at" DATETIME,
