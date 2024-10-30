@@ -97,7 +97,7 @@ CREATE TABLE "payment_types" (
   "id" INTEGER PRIMARY KEY,
   "invoice_id" INTEGER,
   "name" TEXT,
-  "ammount" INTEGER,
+  "amount" INTEGER,
   "created_at" DATETIME,
   "updated_at" DATETIME,
   "deleted_at" DATETIME,
